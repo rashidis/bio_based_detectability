@@ -31,7 +31,7 @@ The sample csv files in the [datasets/test/simul_ddash_params.csv](https://githu
 
 ## Results
 
-Our model achieves the following performance on the 18 sample backgrounds:
+Our model achieves the following performance on the 18 sample backgrounds in figure 3 of the main paper:
 | Model name         |       MSE       |         SE     |
 | ------------------ |---------------- | -------------- |
 | Alexnet + Log. Res.|      0.0978     |      0.0015    |
