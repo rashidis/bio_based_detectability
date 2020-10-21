@@ -1,8 +1,8 @@
 # Optimal visual search based on a model of target detectability in natural images
 
-Optimal visual search based on a model of target detectability in natural images
-
-This repository is the official implementation of [Optimal visual search based on a model of target detectability in natural images]. 
+This repository is the code used to generate the results in the paper
+[Optimal visual search based on a model of target detectability in natural images]. 
+which was presented at [NeurIPS 2020](http://https://nips.cc/)
 
 <img src="https://github.com/rashidis/bio_based_detectability/blob/main/arc.png" width="930">
 
@@ -10,24 +10,30 @@ This repository is the official implementation of [Optimal visual search based o
 
 To install requirements:
 ```setup
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 ## Detectability model
-The presented model in the paper, outputs the detectability fall-off rate for any given image. 
+The presented model in the paper outputs detectability as a function of eccentricity for any given image. 
 
-To calculate the detectability of one single patch, run this command:
+To see how to calculate the detectability of one object on a set of backgrounds, run:
+
 ```produce the detectavility graphs
-python get_ddash.py
+python get_ddash.py -h
 ```
-The sample patches in the [datasets/test](https://github.com/rashidis/bio_based_detectability/tree/main/data/test) folder can be used (images taken from the texture dataset [ETHZ Synthesizability Dataset](http://people.ee.ethz.ch/~daid/synthesizability/#Downloads). The model outputs the detectability-eccentricity graph of the input image and a .csv file with the image name and detectability fall-off rate. 
+
+This will use the object file given as the object_file parameter in the data/overlays fodler, and the backgrounds in the data/test folder.
+
+Sample background patches can be found in [datasets/test](https://github.com/rashidis/bio_based_detectability/tree/main/data/test) (images taken from the texture dataset [ETHZ Synthesizability Dataset](http://people.ee.ethz.ch/~daid/synthesizability/#Downloads). The model outputs the detectability-eccentricity graph of the input image and a .csv file with the image name and detectability fall-off rate. 
 
 ## Search model
-To output the number of fixations and scanpath of any given textued image with the target pasted at an unknown location, run this command:
+To see how to output the number of fixations and scanpath of any given textued image with the target pasted at an unknown location, run this command:
+
 ```produce the detectavility graphs
-python visual_search.py
+python visual_search.py -h
 ```
-The sample csv files in the [datasets/test/simul_ddash_params.csv](https://github.com/rashidis/bio_based_detectability/blob/main/files/simul_ddash_params.csv) folder can be used as the input. The model outputs two csv files containing number of fixations and scanpth. 
+
+The sample input csv files provided (default parameters) in the files folder are from [datasets/test/simul_ddash_params.csv](https://github.com/rashidis/bio_based_detectability/blob/main/files/simul_ddash_params.csv). The model outputs two csv files containing number of fixations and scanpth. 
 
 ## Results
 

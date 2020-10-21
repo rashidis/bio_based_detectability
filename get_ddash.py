@@ -1,3 +1,7 @@
+"""
+    Written by Shima Rashidi
+    Wed 21 Oct 2020 19:51:08 AEDT
+"""
 import cv2
 from PIL import Image
 from math import *
@@ -158,24 +162,46 @@ def analyze_detection_simul(log_fov_ha2,w,human_ddash,h_ddash_datapoints):
     dlist_df.columns=['BG','param']
     dlist_df.to_csv('files/simul_ddash_params.csv',index=False)
 
-expinfo={
-            "codes_dir":"./",
-            "overlay_name":"trans2.png",
-            "fov_rsize":[1,1.4,1.8,2.2,2.6],  # the reatio of window size change with diff eccentricities
-            "gray_flag":True, # True:make images grayscale and then get fvecs
-            "center_flag":True, #True: pastes in the center of BG, Flase, pastes in a random loc. can be [x,y] as a given location to paste
-            "DNN":"Alexnet",
-            "overlay_size":224,
-            "rand_iternum":10 #paste peron in rand_iternum random location and get the average of d'
-}
-expinfo["overlay_dir"]=expinfo["codes_dir"]+"data/overlays/"+expinfo["overlay_name"]
-expinfo["test_data_dir"]=expinfo["codes_dir"]+"data/test/*.png"
 
-with open(expinfo["codes_dir"]+"files/log_fov_ha.pkl",'rb') as file:
-    log_fov_ha=pickle.load(file)
-    
-w=np.load(expinfo["codes_dir"]+"files/w_pretrained.npy") #equation 4 in the NuerIPS paper
-human_ddash=pd.read_csv(expinfo["codes_dir"]+"files/human_ddash_mean.csv")
-h_ddash_datapoints=pd.read_csv(expinfo["codes_dir"]+"files/human_p_ddash.csv")
+if __name__ == "__main__": 
+    import argparse
+    parser = argparse.ArgumentParser(epilog="Will read backgrounds from <base_dir/data/test/*>")
+    parser.add_argument('--base_dir', type=str, default='./', help="Base folder for 'data' and 'files' folders")
+    parser.add_argument('--object_file', type=str, default="trans2.png", help="Filename of object image in folder <base_dir>'/data/overlays'")
+    parser.add_argument('--gray_flag', type=bool, default=True, help='True:make images grayscale before processing')
+    parser.add_argument('--target_pos', type=str, default='Center', help='Can be Center, Centre, Random, or x,y')
+    parser.add_argument('--DNN', type=str, default="Alexnet", help='Can only be Alexnet, apparently!')
+    parser.add_argument('--overlay_size', type=int, default=224, help='Object image will be scaled to this')
+    parser.add_argument('--iters', type=int, default=10, help="Take average of rand_iternum random locations to get d'")
 
-analyze_detection_simul(log_fov_ha,w,human_ddash,h_ddash_datapoints)
+    args = parser.parse_args()
+
+    expinfo={
+            "base_dir":args.base_dir,
+            "overlay_name":args.object_file,
+            "gray_flag":args.gray_flag,
+            "DNN":args.DNN,
+            "overlay_size":args.overlay_size,
+            "rand_iternum":args.iters,
+            "fov_rsize":[1,1.4,1.8,2.2,2.6]  # the reatio of window size change with diff eccentricities
+    }
+    if args.target_pos in ["Centre", "Center", "centre", "center"]:
+        expinfo["center_flag"] = True
+    elif args.target_pos in ["Random", "random"]:
+        expinfo["center_flag"] = False
+    else:
+        expinfo["center_flag"] = list(map(int, args.target_pos.split(",")))
+
+    expinfo["overlay_dir"]=expinfo["base_dir"]+"data/overlays/"+expinfo["overlay_name"]
+    expinfo["test_data_dir"]=expinfo["base_dir"]+"data/test/*.png"
+
+    print(expinfo)
+
+    with open(expinfo["base_dir"]+"files/log_fov_ha.pkl",'rb') as file:
+        log_fov_ha=pickle.load(file)
+        
+    w = np.load(expinfo["base_dir"]+"files/w_pretrained.npy") #equation 4 in the NuerIPS paper
+    human_ddash = pd.read_csv(expinfo["base_dir"]+"files/human_ddash_mean.csv")
+    h_ddash_datapoints=pd.read_csv(expinfo["base_dir"]+"files/human_p_ddash.csv")
+
+    analyze_detection_simul(log_fov_ha,w,human_ddash,h_ddash_datapoints)

@@ -1,3 +1,7 @@
+"""
+    Written by Shima Rashidi
+    Wed 21 Oct 2020 19:51:08 AEDT
+"""
 import cv2
 from PIL import Image
 from math import *
@@ -233,14 +237,21 @@ def get_scanpath_simul(save_dir,iter_num,output_type):
     scanpath_df.to_csv(save_dir+'simul_scanpath_'+output_type+'_d_'+str(iter_num)+'iter.csv',index=False)
 
     
-BG_size=[666,666]
-target_size=40
+if __name__ == "__main__": 
+    import argparse
+    parser = argparse.ArgumentParser(epilog="Input files read from ./files/*.csv")
 
-save_dir='files/'
-get_scanpath_simul(save_dir,iter_num=1,output_type='simul')  #the argument is iternum
+    parser.add_argument('--bg_width', type=int, default=666, help="Width of background image in pixels")
+    parser.add_argument('--bg_height', type=int, default=666, help="Height of background image in pixels")
+    parser.add_argument('--target_size', type=int, default=40, help="Height of target in pixels")
+    parser.add_argument('--dir', type=str, default='files', help="Output folder")
+    parser.add_argument('--iters', type=int, default=1, help="Number of iterations that each search loc and BG is run")
+    parser.add_argument('--out_type', choices=['simul', 'human'], help='Type of output required')
 
-# @iter_num: integer, number of iterations that each search loc and BG is running
-# @output_type: string, comes in the name of the fincal nfix and scanpath csv,
-#'all_participants' if individual ddash is running, simul if simul ddash is running
-# 'human is human ddash from experiment is running
+    args = parser.parse_args()
 
+    BG_size = [args.bg_height, args.bg_width]
+    target_size = args.target_size
+
+    save_dir = args.dir + '/'
+    get_scanpath_simul(save_dir, iter_num=args.iters, output_type=args.out_type)  #the argument is iternum
