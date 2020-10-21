@@ -20,7 +20,7 @@ To calculate the detectability of one single patch, run this command:
 ```produce the detectavility graphs
 python get_ddash.py
 ```
-The sample patches in the [datasets/test](https://github.com/rashidis/bio_based_detectability/tree/main/data/test) folder can be used (images taken from the texture dataset [Describable Textures Dataset (DTD)](https://www.robots.ox.ac.uk/~vgg/data/dtd/). The model outputs the detectability-eccentricity graph of the input image and a .csv file with the image name and detectability fall-off rate. 
+The sample patches in the [datasets/test](https://github.com/rashidis/bio_based_detectability/tree/main/data/test) folder can be used (images taken from the texture dataset [ETHZ Synthesizability Dataset](http://people.ee.ethz.ch/~daid/synthesizability/#Downloads). The model outputs the detectability-eccentricity graph of the input image and a .csv file with the image name and detectability fall-off rate. 
 
 ## Search model
 To output the number of fixations and scanpath of any given textued image with the target pasted at an unknown location, run this command:
