@@ -130,7 +130,7 @@ def get_18BGs_detectability(log_fov_ha):
 
 
 ### test the calculated d' for the backgrounds used in the human experiment
-def analyze_detection_simul(log_fov_ha2,w,human_ddash,h_ddash_datapoints):
+def analyze_detection_simul(log_fov_ha2,w):
 
     ddash_simul=get_18BGs_detectability(log_fov_ha2)
     ddash_simul_df=pd.DataFrame(ddash_simul)#pd.read_csv('./aaa.csv')
@@ -201,7 +201,5 @@ if __name__ == "__main__":
         log_fov_ha=pickle.load(file)
         
     w = np.load(expinfo["base_dir"]+"files/w_pretrained.npy") #equation 4 in the NuerIPS paper
-    human_ddash = pd.read_csv(expinfo["base_dir"]+"files/human_ddash_mean.csv")
-    h_ddash_datapoints=pd.read_csv(expinfo["base_dir"]+"files/human_p_ddash.csv")
 
-    analyze_detection_simul(log_fov_ha,w,human_ddash,h_ddash_datapoints)
+    analyze_detection_simul(log_fov_ha,w)
