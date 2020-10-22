@@ -51,6 +51,11 @@ def dist(x,y):
 
 
 def get_loc_tri_arr():
+#   This function is to model human observer's search performance and scanpth in the preformed
+#   experiment, so the deafult size of the input image is 666 by 666 and there are 84 potential
+#   locations for the fixation. To extend the model to other search experimental setups, the
+#   whole function for producing potential locations should be changed as desired
+
     # gets the 84 locations on a 7 deg circle on equi-distance triangels
     # outputs the 84 locations in an array
     listx = []
